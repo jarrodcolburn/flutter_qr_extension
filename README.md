@@ -1,8 +1,19 @@
-# Flutter QR code generator - Chrome extension
+# Flutter QR - Current tab URL - Chrome extension
 
-Chrome extension created using Flutter for generating QR code from either a text or URL. The QR code's background and foreground colors are also customizable.
+## This repo builds on the excellent demo from Souvik Biswas. Please see his [original repo](https://github.com/sbis04/flutter_qr_extension) first. 
 
-![Chrome extension in action](screenshots/qr-code-ext-demo.gif)
+## This version demos Flutter calling `chrome` extension api using `js` package. 
+
+## Specificly this version calls `chrome.tabs.query` to generate the QR Code using the URL of the current Chrome tab (instead of user text input).
+
+## As little as possible was changed from origianl demo. Changes include:
+* `web/manifest.json` add: `activeTab` permission
+* `pubspec.yaml` add: dependency `js`
+* `lib/chrome_interop.dart` create: interop with javascript `chrome.tabs.query` and param/return objects 
+* `chrome_interop_helper.dart` create: convenience wrapper function `getCurrentTabUrl` to query current tab, casting js dynamic return types to a Future<String>.
+* `lib/qr_view.dart` edit: Calls `getCurrentTabUrl` to retrieve current tab url. Updating text field and QR with result (makes field uneditable by user).
+
+![Chrome extension in action](screenshots/qr-code-url-ext-demo.gif)
 
 ## Usage
 
@@ -11,7 +22,7 @@ To use this project as a Chrome extension, follow the steps below:
 1. Clone this project using:
    
     ```sh
-    git clone https://github.com/sbis04/flutter_qr_extension.git
+    git clone https://github.com/jarrodcolburn/flutter_qr_extension.git
     ```
 
 2. From the project directory, run:

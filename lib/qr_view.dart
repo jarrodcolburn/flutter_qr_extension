@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import 'chrome_interop_helper.dart';
 import 'color_list.dart';
 
 class QRView extends StatefulWidget {
@@ -13,6 +14,7 @@ class QRView extends StatefulWidget {
 class _QRViewState extends State<QRView> {
   late final TextEditingController _textController;
   late final FocusNode _textFocus;
+  bool _enabled = true;
   String qrText = '';
   int qrColorIndex = 0;
   int qrBackgroundColorIndex = 0;
@@ -21,7 +23,13 @@ class _QRViewState extends State<QRView> {
   void initState() {
     _textController = TextEditingController(text: qrText);
     _textFocus = FocusNode();
-
+    getCurrentTabUrl().then((value) {
+      setState(() {
+        qrText = value ?? '';
+        _textController.text = value ?? '';
+        _enabled = false;
+      });
+    });
     super.initState();
   }
 
@@ -57,6 +65,7 @@ class _QRViewState extends State<QRView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
+                      enabled: _enabled,
                       controller: _textController,
                       focusNode: _textFocus,
                       decoration: InputDecoration(
